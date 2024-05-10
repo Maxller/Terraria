@@ -1,0 +1,66 @@
+@startuml Terraria
+class Juego
+class Mundo
+class Jugador
+class Personaje
+'Esta clase se usara cuando sea necesario
+'class NPC 
+'abstract Enemigo
+'class Zombie
+'class Esqueleto
+class Enemigo
+class Hub
+class Inventario
+class Bloque
+class Pared
+class Mineral
+abstract Item
+abstract Herramienta
+abstract Arma
+abstract Armadura
+class Casco
+class Pechera
+class Botas
+class Pico
+class Martillo
+class Hacha
+class Espada
+class Maza
+Class Varita
+
+Juego "1" *-- "1" Mundo
+Juego "1" *-- "1" Personaje
+Juego "1" *-- "1" Hub
+Juego "1" *-- "*" Enemigo
+Hub "1" *-- "1" Inventario
+Inventario "1" *-- "*" Item
+Jugador "1" o-- "1" Personaje
+Personaje "1" o-- "1" Inventario
+Personaje "1" o--o "1,*" Enemigo
+Personaje "1" o-- "1" Item
+
+Item <-- Arma
+Item <-- Herramienta
+Item <-- Armadura
+Item <-- Mineral
+Item <-- Bloque
+
+
+Arma <-- Espada
+Arma <-- Maza
+Arma <-- Varita
+
+Herramienta <-- Pico
+Herramienta <-- Martillo
+Herramienta <-- Hacha
+
+Armadura <-- Casco
+Armadura <-- Pechera
+Armadura <-- Botas
+
+Herramienta "1" o-- "1,*" Bloque
+
+
+
+
+
