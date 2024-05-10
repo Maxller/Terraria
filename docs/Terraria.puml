@@ -12,7 +12,8 @@ class Enemigo
 class Hub
 class Inventario
 class Bloque
-class Pared
+'Clase sera utilizada en una actualizacion posterior
+'class Pared
 class Mineral
 abstract Item
 abstract Herramienta
@@ -27,6 +28,7 @@ class Hacha
 class Espada
 class Maza
 Class Varita
+class RecursoGrafico
 
 Juego "1" *-- "1" Mundo
 Juego "1" *-- "1" Personaje
@@ -38,6 +40,7 @@ Jugador "1" o-- "1" Personaje
 Personaje "1" o-- "1" Inventario
 Personaje "1" o--o "1,*" Enemigo
 Personaje "1" o-- "1" Item
+
 
 Item <-- Arma
 Item <-- Herramienta
@@ -61,6 +64,9 @@ Armadura <-- Botas
 Herramienta "1" o-- "1,*" Bloque
 
 
-
+Personaje "1" *-- "1" RecursoGrafico
+Bloque "1" *-- "1" RecursoGrafico
+Enemigo "1" *-- "1" RecursoGrafico
+Item "1" *-- "1" RecursoGrafico
 
 
