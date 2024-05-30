@@ -1,0 +1,22 @@
+Cambios 0.0.1
+    -> se Creo la clase Juego, sigue en desarrollo
+    -> Se creo un gameloop basico en el main haciendo uso de la clase Juego 
+    -> Se creo la clase de Objetos, se usara para renderizar todos los objetos que contiene el juego, sigue en desarrollo 
+    -> Se creo la clase Personaje, sigue en desrollo
+    -> Se creo un Makefile para poder compilar y ejecutar el Juego
+    -> Se le agrego movimiento lateral basico al personaje de pruebas
+
+Objetivo 0.1 Movimientos basicos de main character completos
+
+Objetivo 0.2 Creacion de mundo
+
+Objetivo 0.3 Interaccion Jugador Mundo
+
+Objetivo 0.4 Creacion de NPC
+
+Objetivo 1.0 Interaccion Jugador NPC
+Notas:
+-> guia_inmovil {left: 2px, top: 2px, width: 26px, Height: 46px }
+-> guia_Movimiento {left: 31px, top: 2px, width: 32px, Height: 48px, Frames: 15} 
+-> guia_derecha {setScale(-1,1)}
+-> guia_izquierda {setScale(1,1)}
