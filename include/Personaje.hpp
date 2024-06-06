@@ -7,7 +7,7 @@ class Personaje : public Objeto
 {
 private:
     sf::Sprite *sprite;
-    bool inmovil;
+    bool inmovil, saltando, cayendo;
     sf::Clock clock;
     float frameTime;
     int direccion;
@@ -34,32 +34,107 @@ public:
     {
         if (clock.getElapsedTime().asSeconds() >= frameTime)
         {
-            if (inmovil)
+            if (inmovil && !saltando && !cayendo)
             {
                 numFrames = 15;
                 currentFrame = 0;
-                frameHeight += 2;
+                frameHeight = 48;
                 frameWidth += 6;
                 inmovil = false;
             }
-            if (direccion != Direccion) {sprite->move(Direccion * frameWidth * -1, 0);
+            if (direccion != Direccion)
+            {
+                sprite->move(Direccion * frameWidth * -1, 0);
                 direccion = Direccion;
             }
             sprite->setScale(direccion, 1);
-            updateFrame(31, 2);
-            currentFrame++;
+            if (cayendo)
+            {
+                Caer();
+            }
+            if (saltando)
+            {
+                Saltar();
+            }
+            if (!saltando && !cayendo)
+            {
+                updateFrame(31, 2);
+                currentFrame++;
+            }
             sprite->move(Direccion * -6, 0);
             clock.restart();
         }
     }
     void noMover()
-    {   
+    {
         numFrames = 1;
         currentFrame = 0;
         frameHeight = 46;
         frameWidth = 26;
         inmovil = true;
-        updateFrame(2, 2);
+        if (!cayendo && !saltando)
+            updateFrame(2, 2);
+        if (!saltando)
+            Caer();
+        saltando = false;
+    }
+    void Saltar()
+    {
+        if (!cayendo)
+        {
+            numFrames = 1;
+            currentFrame = 0;
+            frameHeight = 46;
+            frameWidth = 26;
+            frameWidth = 30;
+            saltando = true;
+            if (clock.getElapsedTime().asSeconds() >= frameTime)
+            {
+                sprite->move(0, -6);
+                updateFrame(528, 2);
+                clock.restart();
+            }
+        }
+        else
+            Caer();
+    }
+    void Saltar(int Direccion)
+    {
+        if (!cayendo)
+        {
+            numFrames = 1;
+            currentFrame = 0;
+            frameHeight = 46;
+            frameWidth = 26;
+            frameWidth = 30;
+            saltando = true;
+            if (clock.getElapsedTime().asSeconds() >= frameTime)
+            {
+                if (direccion != Direccion)
+                {
+                    sprite->move(Direccion * -26, 0);
+                    direccion = Direccion;
+                }
+                sprite->move(Direccion * -6, -6);
+                updateFrame(528, 2);
+                clock.restart();
+            }
+        }
+    }
+    void Caer()
+    {
+        cayendo = true;
+        if (sprite->getPosition().y >= 250)
+        {
+            cayendo = false; // Modificar
+            saltando = false;
+        }
+        else if (clock.getElapsedTime().asSeconds() >= frameTime)
+        {
+            sprite->move(0, 6);
+            updateFrame(528, 2);
+            clock.restart();
+        }
     }
     ~Personaje() {}
 };

@@ -1,3 +1,5 @@
+#Este make file fue generado con ayuda de ChatGPT, pero no se preocupe profe, lo entiendo a la perfeccion
+
 # Nombre del ejecutable
 TARGET = bin/Terraria
 
@@ -36,5 +38,9 @@ clean:
 	rm -rf $(BUILDDIR) $(TARGET)
 
 runa: clean run
+
+runb: src/example.cpp 
+	g++ src/example.cpp -obin/procedural_terrain -lsfml-graphics -lsfml-window -lsfml-system
+	./bin/procedural_terrain
 
 .PHONY: clean run

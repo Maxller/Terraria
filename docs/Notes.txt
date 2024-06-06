@@ -6,6 +6,22 @@ Cambios 0.0.1
     -> Se creo un Makefile para poder compilar y ejecutar el Juego
     -> Se le agrego movimiento lateral basico al personaje de pruebas
 
+Cambios 0.0.2
+    -> Se hicieron pruebas con muchos comseptos del juego, Son las pruebas que se encuentran en la carpeta Borrar despues
+    -> Lo mas basico, se le agrego el salto y la caida al personaje de pruebas, aun no funciona bien
+    -> Se agregaron bastantes aspectos interesantes
+    -> Se agrego la clase PerlinNoise, que es un algoritmo para la generacion precedural
+    -> Se inicio con la generacion de mundos, es una generacion basica, se seguira mejorando
+    -> Se creo un menu basico
+    -> Las clases agregadas esta version fueron
+        -PerlinNoise.- Proporcionado por chatGPT
+        -Bloque.- aun en desuso
+        -Camara.- aun en desuso
+        -Menu.- sigue en desarrollo y en espera de retroalimentacion
+        -Mundo.- sigue en desarrollo, ya funciona lo basico
+    -> Se agrego la carpeta Mundos, se guardaran los mundos creados para jugarlos posteriormente
+    
+
 Objetivo 0.1 Movimientos basicos de main character completos
 
 Objetivo 0.2 Creacion de mundo
@@ -15,8 +31,10 @@ Objetivo 0.3 Interaccion Jugador Mundo
 Objetivo 0.4 Creacion de NPC
 
 Objetivo 1.0 Interaccion Jugador NPC
+
 Notas:
 -> guia_inmovil {left: 2px, top: 2px, width: 26px, Height: 46px }
 -> guia_Movimiento {left: 31px, top: 2px, width: 32px, Height: 48px, Frames: 15} 
+-> guia_Saltando {left: 528px, top: 2px, width: 32px, Height: 48px}
 -> guia_derecha {setScale(-1,1)}
 -> guia_izquierda {setScale(1,1)}
