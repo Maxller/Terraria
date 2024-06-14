@@ -11,6 +11,7 @@ private:
     sf::Clock clock;
     float frameTime;
     int direccion;
+    std::vector<std::vector<Bloque *>> entorno;
 
 public:
     static const int Derecha = -1, Izquierda = 1;
@@ -18,7 +19,7 @@ public:
     {
         direccion = Izquierda;
         this->frameTime = frameTime;
-        InicializarObjeto(frameTime, currentFrame, numFrames, frameWidth, frameHeight, position);
+        InicializarObjeto(currentFrame, numFrames, frameWidth, frameHeight, position);
         if (!cargarTexturas(Ruta))
         { /*Ah ocurrido un Error*/
         }
@@ -26,14 +27,36 @@ public:
         noMover();
     }
 
+    void setEntorno(std::vector<std::vector<Bloque *>> camara){
+        int width = camara[0].size();
+        int heigth = camara.size();
+
+        int entornoWidth = (width / 2) - 2;
+        int entornoHeigth = (heigth / 2) - 3;
+
+        std::vector<Bloque *> BlocksInArrary;
+        // for (int y = posY; y < posY + height; y++)
+        // {
+        //     for (int x = posX; x < posX + width; x++)
+        //     {
+        //         BlocksInArrary.push_back(world->getBlockAt(x,y));
+        //     }
+        //     camara.push_back(BlocksInArrary);
+        //     BlocksInArrary.clear();
+            
+        // }
+
+
+
+    }
     void updateFrame(int left, int top) override
     {
         sprite->setTextureRect(sf::IntRect(left + ((currentFrame % numFrames) * frameWidth + (1 * (currentFrame % numFrames))), top, frameWidth, frameHeight));
     }
     void Mover(/*Direccion, Velocidad*/ int Direccion)
     {
-        if (clock.getElapsedTime().asSeconds() >= frameTime)
-        {
+        //if (clock.getElapsedTime().asSeconds() >= frameTime)
+        //{
             if (inmovil && !saltando && !cayendo)
             {
                 numFrames = 15;
@@ -61,9 +84,8 @@ public:
                 updateFrame(31, 2);
                 currentFrame++;
             }
-            sprite->move(Direccion * -6, 0);
-            clock.restart();
-        }
+        //    clock.restart();
+        //}
     }
     void noMover()
     {
@@ -88,12 +110,12 @@ public:
             frameWidth = 26;
             frameWidth = 30;
             saltando = true;
-            if (clock.getElapsedTime().asSeconds() >= frameTime)
-            {
-                sprite->move(0, -6);
-                updateFrame(528, 2);
-                clock.restart();
-            }
+            // if (clock.getElapsedTime().asSeconds() >= frameTime)
+            // {
+            //     sprite->move(0, -6);
+            updateFrame(528, 2);
+            //     clock.restart();
+            // }
         }
         else
             Caer();
@@ -105,7 +127,6 @@ public:
             numFrames = 1;
             currentFrame = 0;
             frameHeight = 46;
-            frameWidth = 26;
             frameWidth = 30;
             saltando = true;
             if (clock.getElapsedTime().asSeconds() >= frameTime)
@@ -123,18 +144,19 @@ public:
     }
     void Caer()
     {
+
         cayendo = true;
-        if (sprite->getPosition().y >= 250)
-        {
-            cayendo = false; // Modificar
-            saltando = false;
-        }
-        else if (clock.getElapsedTime().asSeconds() >= frameTime)
-        {
-            sprite->move(0, 6);
-            updateFrame(528, 2);
-            clock.restart();
-        }
+        // if (checkCollisionSide())
+        // {
+        //     cayendo = false; // Modificar
+        //     saltando = false;
+        // } else 
+        // // else if (clock.getElapsedTime().asSeconds() >= frameTime)
+        // // {
+        // //     sprite->move(0, 6);
+        //     updateFrame(528, 2);
+        // //     clock.restart();
+        // // }
     }
     ~Personaje() {}
 };

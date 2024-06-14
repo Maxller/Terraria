@@ -1,24 +1,26 @@
 #include <Juego.hpp>
 
-
 int main(int argc, char const *argv[])
 {
-    Juego* Terraria = new Juego(); 
+    sf::Clock clock;
+    Juego *Terraria = new Juego();
 
-    while (Terraria -> IsRunning())
+    while (Terraria->IsRunning())
     {
-        
-        // Procesar eventos
-        Terraria -> HandleEvent();
 
-        // Actualizar la lógica del juego
-        // Aquí se actualiza el estado del juego (movimiento de personajes, etc.)
-        Terraria -> Update();
-        
-        // Limpiar la ventana
-        // Dibujar los objetos del juego
-        // Aquí se dibujan los objetos del juego (sprites, etc.)
-        Terraria -> Render();
+        // Procesar eventos
+        Terraria->HandleEvent();
+
+        if(clock.getElapsedTime().asMilliseconds() > 0.16F){
+            // Actualizar la lógica del juego
+            // Aquí se actualiza el estado del juego (movimiento de personajes, etc.)
+            Terraria->Update();
+
+            // Dibujar los objetos del juego
+            // Aquí se dibujan los objetos del juego (sprites, etc.)
+            Terraria->Render();
+            clock.restart();
+        }
     }
     // Limpiar y liberar recursos (si es necesario)
     delete Terraria;
