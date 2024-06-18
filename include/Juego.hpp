@@ -8,13 +8,14 @@
 #include <Camara.hpp>
 #include <Bloque.hpp>
 
+
 class Juego
 {
 private:
     sf::RenderWindow window;
     sf::Event event;
     std::vector<Objeto *> components;
-    bool isRunning, isKeyPress;
+    bool isRunning;
     Personaje *Guia;
     Menu *menu;
     Mundo mundo;
@@ -26,7 +27,7 @@ private:
 
     void setComponents()
     {
-        std::vector<std::vector<Bloque *>> camaraAux = camara->getCamara();   
+        std::vector<std::vector<Bloque *>> camaraAux = camara->getCamara(); 
         components.clear();
         int contX = 0, contY = 0;
         for (auto array : camaraAux)
@@ -43,10 +44,7 @@ private:
             contX += 16;
             contY = 0;
         }
-
     }
-
-    
 
 public:
     Juego() : window(sf::VideoMode(800, 600), "TierraAria"), mundo()
@@ -54,7 +52,6 @@ public:
         contMoveCameraX = 0;
         contMoveCameraY = 0;
         isRunning = true;
-        isKeyPress = false;
         sf::Texture texture;
         
         
@@ -68,8 +65,19 @@ public:
                 //agregar un splashart de carga
                 sf::Sprite sprite = sf::Sprite(texture);
                 sprite.setPosition(0,0);
+                sf::Text loading;
+                sf::Font font;
+                if (!font.loadFromFile("./assets/Andy.ttf"))
+                {
+                    std::cerr << "Error loading font\n";
+                } else loading.setFont(font);
+                loading.setString("Cargando...");
+                loading.setCharacterSize(100);
+                loading.setFillColor(sf::Color::White);
+                loading.setPosition((width / 2) - (loading.getGlobalBounds().width / 2), (heigth / 2) - (loading.getGlobalBounds().height / 2));
                 window.clear();
                 window.draw(sprite);
+                window.draw(loading);
                 window.display();
             }
             mundo.loadBlocksInWorld();
@@ -103,7 +111,9 @@ public:
     void Update()
     {
         int Direccion = 0;
-        bool left = sf::Keyboard::isKeyPressed(sf::Keyboard::A), right = sf::Keyboard::isKeyPressed(sf::Keyboard::D), up = sf::Keyboard::isKeyPressed(sf::Keyboard::Space), down = sf::Keyboard::isKeyPressed(sf::Keyboard::S);
+        bool left = sf::Keyboard::isKeyPressed(sf::Keyboard::A), right = sf::Keyboard::isKeyPressed(sf::Keyboard::D), up = sf::Keyboard::isKeyPressed(sf::Keyboard::Space);
+
+        
 
         if (left)
             Direccion = Camara::Izquierda;
@@ -111,9 +121,16 @@ public:
             Direccion = Camara::Derecha;
         else if (up)
             Direccion = Camara::Abajo;
-        else if (down)
-            Direccion = Camara::Arriba;
+        
+        if (Guia->isFalling(camara)){
+            Guia -> Caer();
 
+            Direccion = Camara::Arriba;
+        }else if(Direccion == 0){
+            Guia -> noMover();    
+        }
+
+        //Mueve la camara
         if (Direccion != 0)
         {
             if (contMoveCameraX < 16 && contMoveCameraX > -16 && contMoveCameraY < 16 && contMoveCameraY > -16)
@@ -124,8 +141,11 @@ public:
                     contMoveCameraX += Direccion;
                 }
                 else if (Direccion == 2 || Direccion == -2)
+                    if (Direccion == 2)
+                    {
+                        Guia->Saltar();
+                    }
                     contMoveCameraY += Direccion / 2;
-
                 for (auto *GameObject : components)
                     if (Direccion == 1 || Direccion == -1)
                         GameObject->deltaPopsicion(Direccion, 0);
@@ -139,6 +159,10 @@ public:
                 if (Direccion == 1 || Direccion == -1)
                     contMoveCameraX = 0;
                 else if (Direccion == 2 || Direccion == -2)
+                    if (Direccion == 2)
+                    {
+                        Guia->Saltar();
+                    }
                     contMoveCameraY = 0;
                 for (auto *GameObject : components)
                     if (Direccion == 1 || Direccion == -1)

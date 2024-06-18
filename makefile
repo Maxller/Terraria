@@ -37,10 +37,4 @@ run: $(TARGET)
 clean:
 	rm -rf $(BUILDDIR) $(TARGET)
 
-runa: clean run
-
-runb: src/example.cpp 
-	g++ src/example.cpp -obin/procedural_terrain -lsfml-graphics -lsfml-window -lsfml-system
-	./bin/procedural_terrain
-
 .PHONY: clean run

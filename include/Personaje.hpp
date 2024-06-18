@@ -2,6 +2,9 @@
 #include <SFML/Graphics.hpp>
 #include <Objeto.hpp>
 #include <string>
+#include <Bloque.hpp>
+#include <iostream>
+#include <Camara.hpp>
 
 class Personaje : public Objeto
 {
@@ -11,7 +14,6 @@ private:
     sf::Clock clock;
     float frameTime;
     int direccion;
-    std::vector<std::vector<Bloque *>> entorno;
 
 public:
     static const int Derecha = -1, Izquierda = 1;
@@ -27,27 +29,25 @@ public:
         noMover();
     }
 
-    void setEntorno(std::vector<std::vector<Bloque *>> camara){
-        int width = camara[0].size();
-        int heigth = camara.size();
-
-        int entornoWidth = (width / 2) - 2;
-        int entornoHeigth = (heigth / 2) - 3;
-
-        std::vector<Bloque *> BlocksInArrary;
-        // for (int y = posY; y < posY + height; y++)
-        // {
-        //     for (int x = posX; x < posX + width; x++)
-        //     {
-        //         BlocksInArrary.push_back(world->getBlockAt(x,y));
-        //     }
-        //     camara.push_back(BlocksInArrary);
-        //     BlocksInArrary.clear();
-            
-        // }
-
-
-
+    std::vector<Bloque *> getEntorno(Camara* camara)
+    {
+        int width = camara->getWidth();
+        int heigth = camara->getHeight();
+        int entornoX = (width / 2) - 1;
+        int entornoY = (heigth / 2) - 2;
+        std::vector<Bloque *> BlocksInArrary;   
+        for (int y = entornoY; y < entornoY + 4; y++)
+        {
+            for (int x = entornoX; x < entornoX + 2; x++)
+            {
+                Bloque *aux = camara->getBlockAt(x,y);
+                if (aux != nullptr){
+                    BlocksInArrary.push_back(aux);
+                }
+                
+            }
+        }
+        return BlocksInArrary;
     }
     void updateFrame(int left, int top) override
     {
@@ -55,37 +55,29 @@ public:
     }
     void Mover(/*Direccion, Velocidad*/ int Direccion)
     {
-        //if (clock.getElapsedTime().asSeconds() >= frameTime)
-        //{
-            if (inmovil && !saltando && !cayendo)
-            {
-                numFrames = 15;
-                currentFrame = 0;
-                frameHeight = 48;
-                frameWidth += 6;
-                inmovil = false;
-            }
-            if (direccion != Direccion)
-            {
-                sprite->move(Direccion * frameWidth * -1, 0);
-                direccion = Direccion;
-            }
-            sprite->setScale(direccion, 1);
-            if (cayendo)
-            {
-                Caer();
-            }
-            if (saltando)
-            {
-                Saltar();
-            }
-            if (!saltando && !cayendo)
-            {
-                updateFrame(31, 2);
-                currentFrame++;
-            }
-        //    clock.restart();
-        //}
+     if (clock.getElapsedTime().asSeconds() >= frameTime)
+        {
+        if (inmovil)
+        {
+            numFrames = 15;
+            currentFrame = 0;
+            frameHeight = 48;
+            frameWidth += 6;
+            inmovil = false;
+        }
+        if (direccion != Direccion)
+        {
+            sprite->move(Direccion * frameWidth * -1, 0);
+            direccion = Direccion;
+        }
+        sprite->setScale(direccion, 1);
+        if (!saltando && !cayendo)
+        {
+            updateFrame(31, 2);
+            currentFrame++;
+        }
+            clock.restart();
+        }
     }
     void noMover()
     {
@@ -94,11 +86,8 @@ public:
         frameHeight = 46;
         frameWidth = 26;
         inmovil = true;
-        if (!cayendo && !saltando)
-            updateFrame(2, 2);
-        if (!saltando)
-            Caer();
         saltando = false;
+        updateFrame(2,2);
     }
     void Saltar()
     {
@@ -112,7 +101,6 @@ public:
             saltando = true;
             // if (clock.getElapsedTime().asSeconds() >= frameTime)
             // {
-            //     sprite->move(0, -6);
             updateFrame(528, 2);
             //     clock.restart();
             // }
@@ -144,19 +132,27 @@ public:
     }
     void Caer()
     {
-
         cayendo = true;
-        // if (checkCollisionSide())
-        // {
-        //     cayendo = false; // Modificar
-        //     saltando = false;
-        // } else 
-        // // else if (clock.getElapsedTime().asSeconds() >= frameTime)
-        // // {
-        // //     sprite->move(0, 6);
-        //     updateFrame(528, 2);
-        // //     clock.restart();
-        // // }
+        updateFrame(528, 2);   
     }
+    
+    bool isFalling(Camara* camara){
+        if(!saltando){
+            cayendo = true;
+            std::vector<Bloque *> entorno = getEntorno(camara);
+            for (Bloque* bloque : entorno) {
+                if (checkCollisionSide(bloque) == CollisionSide::Bottom) {
+                    std::cout<<"tengo un bloque en las patas"<<std::endl;
+                    cayendo = false;
+                    break;
+                } 
+            }
+            return cayendo;        
+        }
+        return false;
+    }
+
+
+    
     ~Personaje() {}
 };

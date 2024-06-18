@@ -52,6 +52,15 @@ public:
     std::vector<std::vector<Bloque *>> getCamara(){
         return camara;
     }
+    Bloque* getBlockAt(int x, int y){
+        return camara[y][x];
+    }
+    int getWidth(){
+        return width;
+    }
+    int getHeight(){
+        return height;
+    }
 
     ~Camara();
 };

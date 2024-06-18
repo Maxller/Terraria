@@ -6,6 +6,8 @@ class Menu
 private:
     class Button
     {
+    private:
+        sf::Text buttonText;
 
     public:
         Button(const std::string &text, const sf::Font &font, int width, int YPos)
@@ -33,47 +35,50 @@ private:
         {
             buttonText.setFillColor(Color);
         }
-
-    private:
-        sf::Text buttonText;
     };
-    Button* playButton;
-    Button* optionsButton;
-    Button* exitButton;
-    sf::Texture logoTexture;
+    Button *playButton;
+    Button *optionsButton;
+    Button *exitButton;
+    sf::Texture logoTexture, backTexture;
     sf::Font font;
-    sf::Sprite logoSprite;
+    sf::Sprite logoSprite, backSprite;
+
 public:
     Menu(int width, int heigth)
     {
-        
 
         if (!font.loadFromFile("./assets/Andy.ttf"))
         {
             std::cerr << "Error loading font\n";
         }
-        
+
         if (!logoTexture.loadFromFile("./assets/custom-terraria-logo.png"))
         {
             std::cerr << "Error loading logo image\n";
         }
-        
+        if (backTexture.loadFromFile("./assets/Splash_9_0.png"))
+            {
+            std::cerr << "Error loading logo image\n";
+            }
+
         logoSprite.setTexture(logoTexture);
+        backSprite.setTexture(backTexture);
         logoSprite.setPosition((width / 2) - (logoSprite.getGlobalBounds().width / 2), 50);
 
-         playButton=new Button("Jugar", font, width, (heigth / 2) - 100);
-         optionsButton=new Button("Opciones", font, width, (heigth / 2));
-         exitButton=new Button("Salir", font, width, (heigth / 2) + 100);
+        playButton = new Button("Jugar", font, width, (heigth / 2) - 100);
+        optionsButton = new Button("Opciones", font, width, (heigth / 2));
+        exitButton = new Button("Salir", font, width, (heigth / 2) + 100);
     }
 
-    int displayMenu( sf::RenderWindow &window)
+    int displayMenu(sf::RenderWindow &window)
     {
         while (window.isOpen())
         {
             sf::Event event;
             while (window.pollEvent(event))
             {
-                if (event.type == sf::Event::Closed){
+                if (event.type == sf::Event::Closed)
+                {
                     window.close();
                     return 0;
                 }
@@ -114,6 +119,7 @@ public:
                 exitButton->setFillColor(sf::Color::Cyan);
 
             window.clear();
+            window.draw(backSprite);
             window.draw(logoSprite);
             playButton->draw(window);
             optionsButton->draw(window);
