@@ -6,6 +6,8 @@
 ![Tierra Aria](docs/ScreenShoot2.png)
 ![Tierra Aria](docs/ScreenShoot3.png)
 
+## Video demostracion
+https://github.com/Maxller/Terraria/assets/89055172/a6bd0e56-0307-4355-848d-7b17433c2932
 
 ## Objetivos del Desarrollo
 
@@ -52,6 +54,7 @@ make run
 ## Historial de Cambios
 
 ### Cambios 0.0.1
+
 - Creación de la clase Juego, sigue en desarrollo.
 - Implementación de un gameloop básico en el main utilizando la clase Juego.
 - Creación de la clase Objetos, usada para renderizar todos los objetos del juego, sigue en desarrollo.
