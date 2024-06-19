@@ -11,7 +11,7 @@ int main(int argc, char const *argv[])
         // Procesar eventos
         Terraria->HandleEvent();
 
-        if(clock.getElapsedTime().asMilliseconds() > 0.16F){
+        if(clock.getElapsedTime().asMilliseconds() > 1.6F){
             // Actualizar la lógica del juego
             // Aquí se actualiza el estado del juego (movimiento de personajes, etc.)
             Terraria->Update();

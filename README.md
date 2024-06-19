@@ -2,11 +2,12 @@
 
 **Tierra Aria** es un pequeño proyecto inspirado en Terraria, que busca combinar elementos de exploración, construcción, artesanía, combate y minería en un videojuego de acción-aventura y sandbox. Los jugadores comienzan en un mundo generado proceduralmente y deben reunir recursos, construir estructuras, y luchar contra diversas criaturas y jefes. Tierra Aria es conocido por su estilo de gráficos pixelados en 2D y su enfoque en la creatividad y la libertad del jugador para explorar y modificar el entorno.
 
-![Tierra Aria](assets/ScreenShoot1.png)
-![Tierra Aria](assets/ScreenShoot2.png)
-![Tierra Aria](assets/ScreenShoot3.png)
+![Tierra Aria](docs/ScreenShoot1.png)
+![Tierra Aria](docs/ScreenShoot2.png)
+![Tierra Aria](docs/ScreenShoot3.png)
 
 
+<iframe width="560" height="315" src="https://youtu.be/7r-O-jmsPII" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
 
 ## Objetivos del Desarrollo
 
@@ -23,7 +24,6 @@
 - `include/` - Archivos de cabecera
 - `assets/` - Contiene los recursos del proyecto
 - `docs/` - Contiene la documentación del proyecto
-- `Mundos/` - Contiene los mundos generados por el jugador
 
 ## Información para el Programador
 
@@ -38,9 +38,9 @@ Para compilar el proyecto necesitas instalar algunas librerías. Se recomienda i
 # Instalar las librerías necesarias en MINGW64
 pacman -S mingw-w64-x86_64-gcc mingw-w64-x86_64-sfml
 
-# Compilar y Ejecutar el proyecto
+# Compilar y Ejecutar el proyecto 
 make run
-
+```
 ###Clases Creadas Hasta el Momento
 - `Bloque.hpp` - Propiedades de los bloques del juego
 - `Camara.hpp` - Muestra en pantalla una porción del mundo

@@ -1,4 +1,160 @@
-@startuml Terraria
-class Juego{
+@startuml TierraAria
 
+class Juego {
+    - sf::RenderWindow window
+    - sf::Event event
+    - std::vector<Objeto *> components
+    - bool isRunning
+    - Personaje *Guia
+    - Menu *menu
+    - Mundo mundo
+    - Camara *camara
+    - const int width = 800
+    - const int heigth = 600
+    - int contMoveCameraX
+    - int contMoveCameraY
+    - sf::Clock clock
+    - void SetComponents()
+    + Juego()
+    + void HandleEvent()
+    + void Update()
+    + void Render()
+    + bool IsRunning()
+    + ~Juego()
 }
+
+class Personaje {
+    - sf::Sprite *sprite
+    - bool inmovil
+    - bool saltando
+    - bool cayendo
+    - sf::Clock clock
+    - float frameTime
+    - int direccion
+    + static const int DERECHA = -1
+    + static const int IZQUIERDA = 1
+    + Personaje(std::string Ruta, float frameTime, int currentFrame, int numFrames, int frameWidth, int frameHeight, sf::Vector2f position)
+    + std::vector<Bloque *> GetEntorno(Camara* camara)
+    + void UpdateFrame(int left, int top) override
+    + void Mover(int Direccion)
+    + void Detener()
+    + void Saltar()
+    + void Saltar(int Direccion)
+    + void Caer()
+    + bool CheckIfIsFalling(Camara* camara)
+    + ~Personaje()
+}
+
+class Menu {
+    - Button *playButton
+    - Button *optionsButton
+    - Button *exitButton
+    - sf::Texture logoTexture
+    - sf::Texture backTexture
+    - sf::Font font
+    - sf::Sprite logoSprite
+    - sf::Sprite backSprite
+    + Menu(int width, int heigth)
+    + int DisplayMenu(sf::RenderWindow &window)
+    + ~Menu()
+    
+    
+}
+
+class Button {
+        - sf::Text buttonText
+        + Button(const std::string &text, const sf::Font &font, int width, int YPos)
+        + void Draw(sf::RenderWindow &window)
+        + bool CheckIfIsMouseOver(sf::RenderWindow &window)
+        + void SetFillColor(sf::Color Color)
+}
+
+
+class Mundo {
+    - PerlinNoise *perlin
+    - std::vector<std::vector<int>> world
+    - std::vector<std::vector<Bloque *>> blocksInWorld
+    + Mundo()
+    + void CrearMundo(int heigth, int width, std::string NombreMundo)
+    + void CargarMundo(std::string NombreMundo)
+    + void GuardarMundo(std::string NombreMundo)
+    + void CambiarBloqueEn(int x, int y)
+    + std::vector<std::vector<int>> GetMundo()
+    + std::vector<std::vector<Bloque *>> GetMundoByBlocks()
+    + int GetWidth()
+    + int GetHeight()
+    + void LoadBlocksInWorld()
+    + Bloque* GetBlockAt(int x, int y)
+    + sf::Vector2f GetSpawnCoords()
+    + ~Mundo()
+}
+
+class Camara {
+    - int width
+    - int height
+    - int posX
+    - int posY
+    - std::vector<std::vector<Bloque *>> camara
+    - Mundo* world
+    + static const int DERECHA = -1
+    + static const int IZQUIERDA = 1
+    + static const int ARRIBA = -2
+    + static const int ABAJO = 2
+    + Camara(int width, int height)
+    + void CargarCamara(Mundo* mundo)
+    + void MoverCamara(int Direccion)
+    + std::vector<std::vector<Bloque *>> GetCamara()
+    + Bloque* GetBlockAt(int x, int y)
+    + int GetWidth()
+    + int GetHeight()
+    + ~Camara()
+    - void GetBlocksOfWorld()
+}
+
+class Objeto {
+    - sf::RectangleShape hitBox
+    - sf::Texture texture
+    - sf::Vector2f position
+    - sf::Sprite sprite
+    # int currentFrame
+    # int numFrames
+    # int frameWidth
+    # int frameHeight
+    # sf::Sprite* GetSpriteptr()
+    # void InicializarObjeto(int currentFrame, int numFrames, int frameWidth, int frameHeight, sf::Vector2f position)
+    # bool CargarTexturas(std::string ruta)
+    # virtual void UpdateFrame(int, int) = 0
+    + Objeto()
+    + sf::FloatRect GetBounds()
+    + void SetPopsicion(int deltaX, int deltaY)
+    + void DeltaPopsicion(int deltaX, int deltaY)
+    + sf::Sprite GetSprite()
+    + CollisionSide CheckCollisionSide(Objeto* obj)
+    + ~Objeto()
+}
+
+class Bloque {
+    - sf::Sprite *sprite
+    + Bloque(std::string ruta)
+    + Bloque(std::string ruta, sf::Vector2f position)
+    + void UpdateFrame(int left, int top)
+    + ~Bloque()
+}
+
+
+Juego "1" *-- "0..1" Personaje
+Juego "1" *-- "0..1" Menu
+Juego "1" *-- "1" Mundo
+Juego "1" *-- "0..1" Camara
+Juego "1" *-- "0..*" Bloque
+Juego "1" *-- "0..*" Objeto
+
+Camara "1" *-- "1" Mundo
+Camara o-- Mundo
+Bloque --|> Objeto
+
+Mundo "1" *-- "0..*" Bloque
+Mundo "1" *-- "1" PerlinNoise
+Objeto <|-- Personaje
+Personaje  o--  Camara
+

@@ -1,5 +1,7 @@
 @startuml Terraria
-class Juego
+class Juego{
+    
+}
 class Mundo
 class Jugador
 class Personaje

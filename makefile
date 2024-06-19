@@ -10,10 +10,11 @@ CC = g++
 SRCDIR = src
 INCDIR = include
 BUILDDIR = build
-
+# g++ src/main.cpp -obin/Terraria -Iinclude -Wall -g -lsfml-graphics -lsfml-window -lsfml-system -lsfml-audio
 # Flags
 CFLAGS = -I$(INCDIR) -Wall -g
-LDFLAGS = -lsfml-graphics -lsfml-window -lsfml-system -lsfml-audio -lbox2d
+
+LDFLAGS = -lsfml-graphics -lsfml-window -lsfml-system -lsfml-audio #-lbox2d
 
 # Archivos de fuente y objetos
 SOURCES = $(wildcard $(SRCDIR)/*.cpp)

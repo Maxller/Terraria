@@ -41,3 +41,11 @@ Notas:
 
 
 -> bloque {width: 15px, Height: 15px}
+
+
+
+Done -> agregar video al readme
+Done -> Metodos y calses - PascalCase
+Done -> Limpiar folders 
+Done -> Metods verbos
+Done -> Relacion usa

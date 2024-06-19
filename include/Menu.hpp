@@ -19,12 +19,12 @@ private:
             buttonText.setPosition((width / 2) - (buttonText.getGlobalBounds().width / 2), YPos);
         }
 
-        void draw(sf::RenderWindow &window)
+        void Draw(sf::RenderWindow &window)
         {
             window.draw(buttonText);
         }
 
-        bool isMouseOver(sf::RenderWindow &window)
+        bool CheckIfIsMouseOver(sf::RenderWindow &window)
         {
             sf::Vector2i mousePos = sf::Mouse::getPosition(window);
             sf::FloatRect buttonRect = buttonText.getGlobalBounds();
@@ -47,16 +47,16 @@ public:
     Menu(int width, int heigth)
     {
 
-        if (!font.loadFromFile("./assets/Andy.ttf"))
+        if (!font.loadFromFile("./assets/font/Andy.ttf"))
         {
             std::cerr << "Error loading font\n";
         }
 
-        if (!logoTexture.loadFromFile("./assets/custom-terraria-logo.png"))
+        if (!logoTexture.loadFromFile("./assets/image/custom-terraria-logo.png"))
         {
             std::cerr << "Error loading logo image\n";
         }
-        if (backTexture.loadFromFile("./assets/Splash_9_0.png"))
+        if (backTexture.loadFromFile("./assets/image/Splash_9_0.png"))
             {
             std::cerr << "Error loading logo image\n";
             }
@@ -70,7 +70,7 @@ public:
         exitButton = new Button("Salir", font, width, (heigth / 2) + 100);
     }
 
-    int displayMenu(sf::RenderWindow &window)
+    int DisplayMenu(sf::RenderWindow &window)
     {
         while (window.isOpen())
         {
@@ -85,17 +85,17 @@ public:
 
                 if (event.type == sf::Event::MouseButtonPressed)
                 {
-                    if (playButton->isMouseOver(window))
+                    if (playButton->CheckIfIsMouseOver(window))
                     {
                         std::cout << "Jugar presionado\n";
                         return 1;
                     }
-                    if (optionsButton->isMouseOver(window))
+                    if (optionsButton->CheckIfIsMouseOver(window))
                     {
                         std::cout << "Opciones presionado\n";
                         return 2;
                     }
-                    if (exitButton->isMouseOver(window))
+                    if (exitButton->CheckIfIsMouseOver(window))
                     {
                         window.close();
                         return 0;
@@ -103,17 +103,17 @@ public:
                 }
             }
 
-            if (playButton->isMouseOver(window))
+            if (playButton->CheckIfIsMouseOver(window))
                 playButton->setFillColor(sf::Color::Green);
             else
                 playButton->setFillColor(sf::Color::Cyan);
 
-            if (optionsButton->isMouseOver(window))
+            if (optionsButton->CheckIfIsMouseOver(window))
                 optionsButton->setFillColor(sf::Color::Green);
             else
                 optionsButton->setFillColor(sf::Color::Cyan);
 
-            if (exitButton->isMouseOver(window))
+            if (exitButton->CheckIfIsMouseOver(window))
                 exitButton->setFillColor(sf::Color::Green);
             else
                 exitButton->setFillColor(sf::Color::Cyan);
@@ -121,9 +121,9 @@ public:
             window.clear();
             window.draw(backSprite);
             window.draw(logoSprite);
-            playButton->draw(window);
-            optionsButton->draw(window);
-            exitButton->draw(window);
+            playButton->Draw(window);
+            optionsButton->Draw(window);
+            exitButton->Draw(window);
             window.display();
         }
         return 0;

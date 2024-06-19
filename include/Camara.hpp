@@ -1,3 +1,4 @@
+
 #pragma once
 #include <Mundo.hpp>
 
@@ -14,7 +15,7 @@ private:
         {
             for (int x = posX; x < posX + width; x++)
             {
-                BlocksInArrary.push_back(world->getBlockAt(x,y));
+                BlocksInArrary.push_back(world->GetBlockAt(x,y));
             }
             camara.push_back(BlocksInArrary);
             BlocksInArrary.clear();
@@ -22,24 +23,22 @@ private:
         }
     }
 public:
-    static const int Derecha = -1, Izquierda = 1, Arriba = -2, Abajo = 2;
+    static const int DERECHA = -1, IZQUIERDA = 1, ARRIBA = -2, ABAJO = 2;
 
     Camara(int width, int height){
         this -> width = width;
         this -> height = height;
     }
 
-    void cargarCamara(Mundo* mundo){
-        sf::Vector2f spawnCoords = mundo ->spawnCoords();
+    void CargarCamara(Mundo* mundo){
+        sf::Vector2f spawnCoords = mundo ->GetSpawnCoords();
         posX = spawnCoords.x - width/2 ;
         posY = spawnCoords.y - height/2 ;
         world = mundo;
         getBlocksOfWorld();
 
     }
-
-
-    void moverCamara(int Direccion){
+    void MoverCamara(int Direccion){
         if(Direccion == 1 || Direccion == -1){
             posX -= Direccion;
         }
@@ -49,16 +48,16 @@ public:
         camara.clear();
         getBlocksOfWorld();
     }
-    std::vector<std::vector<Bloque *>> getCamara(){
+    std::vector<std::vector<Bloque *>> GetCamara(){
         return camara;
     }
-    Bloque* getBlockAt(int x, int y){
+    Bloque* GetBlockAt(int x, int y){
         return camara[y][x];
     }
-    int getWidth(){
+    int GetWidth(){
         return width;
     }
-    int getHeight(){
+    int GetHeight(){
         return height;
     }
 

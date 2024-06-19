@@ -20,14 +20,14 @@ private:
     Menu *menu;
     Mundo mundo;
     Camara *camara;
-    const int width = 800;
-    const int heigth = 600;
+    const int width = 1200;
+    const int heigth = 900;
     int contMoveCameraX, contMoveCameraY;
     sf::Clock clock;
 
-    void setComponents()
+    void SetComponents()
     {
-        std::vector<std::vector<Bloque *>> camaraAux = camara->getCamara(); 
+        std::vector<std::vector<Bloque *>> camaraAux = camara->GetCamara(); 
         components.clear();
         int contX = 0, contY = 0;
         for (auto array : camaraAux)
@@ -36,7 +36,7 @@ private:
             {   
                 if (bloque != nullptr)
                 {
-                    bloque -> setPopsicion(contY, contX);
+                    bloque -> SetPopsicion(contY, contX);
                     components.push_back(bloque);
                 }
                 contY += 16;
@@ -47,7 +47,7 @@ private:
     }
 
 public:
-    Juego() : window(sf::VideoMode(800, 600), "TierraAria"), mundo()
+    Juego() : window(sf::VideoMode(1200, 900), "TierraAria"), mundo()
     {
         contMoveCameraX = 0;
         contMoveCameraY = 0;
@@ -56,18 +56,18 @@ public:
         
         
         menu = new Menu(width, heigth);
-        switch (menu->displayMenu(window))
+        switch (menu->DisplayMenu(window))
         {
         case 1:
             mundo.CrearMundo(300, 500, "Hola mundo");
-            if (texture.loadFromFile("./assets/Splash_9_0.png"))
+            if (texture.loadFromFile("./assets/image/Splash_9_0.png"))
             {
                 //agregar un splashart de carga
                 sf::Sprite sprite = sf::Sprite(texture);
                 sprite.setPosition(0,0);
                 sf::Text loading;
                 sf::Font font;
-                if (!font.loadFromFile("./assets/Andy.ttf"))
+                if (!font.loadFromFile("./assets/font/Andy.ttf"))
                 {
                     std::cerr << "Error loading font\n";
                 } else loading.setFont(font);
@@ -80,11 +80,11 @@ public:
                 window.draw(loading);
                 window.display();
             }
-            mundo.loadBlocksInWorld();
+            mundo.LoadBlocksInWorld();
             camara = new Camara((width / 16) + 2, (heigth / 16) + 2);
-            camara->cargarCamara(&mundo);
-            setComponents();
-            Guia = new Personaje("./assets/NPC_Guide.png", 0.2f,1,1,26,46,sf::Vector2f((width/2)-13,(heigth/2) - 46));
+            camara->CargarCamara(&mundo);
+            SetComponents();
+            Guia = new Personaje("./assets/image/NPC_Guide.png", 0.2f,1,1,26,46,sf::Vector2f((width/2)-13,(heigth/2) - 46));
             break;
         case 2:
             // No hay opciones jeje
@@ -111,23 +111,21 @@ public:
     void Update()
     {
         int Direccion = 0;
+        bool mover = true;
         bool left = sf::Keyboard::isKeyPressed(sf::Keyboard::A), right = sf::Keyboard::isKeyPressed(sf::Keyboard::D), up = sf::Keyboard::isKeyPressed(sf::Keyboard::Space);
 
-        
-
         if (left)
-            Direccion = Camara::Izquierda;
+            Direccion = Camara::IZQUIERDA;
         else if (right)
-            Direccion = Camara::Derecha;
+            Direccion = Camara::DERECHA;
         else if (up)
-            Direccion = Camara::Abajo;
+            Direccion = Camara::ABAJO;
         
-        if (Guia->isFalling(camara)){
+        if (Guia->CheckIfIsFalling(camara)){
             Guia -> Caer();
-
-            Direccion = Camara::Arriba;
+            Direccion = Camara::ARRIBA;
         }else if(Direccion == 0){
-            Guia -> noMover();    
+            Guia -> Detener();    
         }
 
         //Mueve la camara
@@ -137,8 +135,10 @@ public:
             {
                 
                 if (Direccion == 1 || Direccion == -1){
-                    Guia -> Mover(Direccion);
-                    contMoveCameraX += Direccion;
+                    if (Guia -> Mover(Direccion, camara)){
+                        mover = false;
+                        contMoveCameraX += Direccion;
+                    }
                 }
                 else if (Direccion == 2 || Direccion == -2)
                     if (Direccion == 2)
@@ -146,16 +146,18 @@ public:
                         Guia->Saltar();
                     }
                     contMoveCameraY += Direccion / 2;
-                for (auto *GameObject : components)
-                    if (Direccion == 1 || Direccion == -1)
-                        GameObject->deltaPopsicion(Direccion, 0);
-                    else if (Direccion == 2 || Direccion == -2)
-                        GameObject->deltaPopsicion(0, Direccion / 2);
+                if (mover){
+                    for (auto *GameObject : components)
+                        if (Direccion == 1 || Direccion == -1)
+                            GameObject->ChangePopsicion(Direccion, 0);
+                        else if (Direccion == 2 || Direccion == -2)
+                            GameObject->ChangePopsicion(0, Direccion / 2);
+                }
             }
             else
             {
-                camara->moverCamara(Direccion);
-                setComponents();
+                camara->MoverCamara(Direccion);
+                SetComponents();
                 if (Direccion == 1 || Direccion == -1)
                     contMoveCameraX = 0;
                 else if (Direccion == 2 || Direccion == -2)
@@ -166,9 +168,9 @@ public:
                     contMoveCameraY = 0;
                 for (auto *GameObject : components)
                     if (Direccion == 1 || Direccion == -1)
-                        GameObject->deltaPopsicion(0, contMoveCameraY);
+                        GameObject->ChangePopsicion(0, contMoveCameraY);
                     else if (Direccion == 2 || Direccion == -2)
-                        GameObject->deltaPopsicion(contMoveCameraX, 0);
+                        GameObject->ChangePopsicion(contMoveCameraX, 0);
             }
         }
     }
@@ -176,9 +178,9 @@ public:
     void Render()
     {
         window.clear();
-        window.draw(Guia->getSprite());
+        window.draw(Guia->GetSprite());
         for (auto *GameObject : components)
-            window.draw(GameObject->getSprite());
+            window.draw(GameObject->GetSprite());
         window.display();
     }
 

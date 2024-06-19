@@ -16,22 +16,23 @@ private:
     std::vector<std::vector<Bloque *>> blocksInWorld;
 
 public:
-    Mundo(/* args */) {
+    Mundo(/* args */)
+    {
         unsigned int seed = std::chrono::system_clock::now().time_since_epoch().count();
         perlin = new PerlinNoise(seed);
     }
-    void CrearMundo(int heigth, int width,std::string NombreMundo)
+    void CrearMundo(int heigth, int width, std::string NombreMundo)
     {
         world = std::vector<std::vector<int>>(heigth, std::vector<int>(width, 1));
         int groundheigth = heigth / 1.1; // La altura del piso
-        
+
         // Crear mundo superficial
         for (int x = 0; x < width; ++x)
         {
             double nx = static_cast<double>(x) / width;
             double elevation = perlin->noise(12 * nx, 0, 0);
             int columnheigth = static_cast<int>((elevation + 1) * groundheigth / 5) + groundheigth / 5;
-            
+
             for (int y = 0; y < heigth; ++y)
             {
                 if (y < columnheigth)
@@ -48,7 +49,7 @@ public:
                 }
             }
         }
-        
+
         // Generación de cuevas usando Cellular Automata
         unsigned int seed = std::chrono::system_clock::now().time_since_epoch().count();
         std::default_random_engine generator(seed);
@@ -98,7 +99,7 @@ public:
             }
             caveMap = newCaveMap;
         }
-        
+
         // Integrar mapa de cuevas en el mundo
         for (int y = 0; y < heigth; ++y)
         {
@@ -111,30 +112,34 @@ public:
             }
         }
         GuardarMundo(NombreMundo);
-        
     }
     void CargarMundo(std::string NombreMundo)
     {
-        std::ifstream inFile("./Mundos/" + NombreMundo);
-        if (inFile.is_open()) {
+        std::ifstream inFile("./assets/mundos/" + NombreMundo);
+        if (inFile.is_open())
+        {
             std::string line;
-            while (std::getline(inFile, line)) {
+            while (std::getline(inFile, line))
+            {
                 std::vector<int> row;
                 std::istringstream iss(line);
                 int num;
-                while (iss >> num) {
+                while (iss >> num)
+                {
                     row.push_back(num);
                 }
                 world.push_back(row);
             }
             inFile.close();
-        } else {
-            std::cerr << "No se pudo abrir el archivo para lectura "  << std::endl;
+        }
+        else
+        {
+            std::cerr << "No se pudo abrir el archivo para lectura " << std::endl;
         }
     }
     void GuardarMundo(std::string NombreMundo)
     {
-        std::ofstream outFile("./Mundos/" + NombreMundo);
+        std::ofstream outFile("./assets/mundos/" + NombreMundo);
         if (outFile.is_open())
         {
             for (const auto &row : world)
@@ -155,30 +160,34 @@ public:
     void CambiarBloqueEn(int x, int y)
     {
     }
-    std::vector<std::vector<int>>getMundo(){
+    std::vector<std::vector<int>> GetMundo()
+    {
         return world;
     }
-    std::vector<std::vector<Bloque *>>getMundoByBlocks(){
+    std::vector<std::vector<Bloque *>> GetMundoByBlocks()
+    {
         return blocksInWorld;
     }
-    int getWidth(){
+    int GetWidth()
+    {
         return world[0].size();
     }
-    int getHeight(){
+    int GetHeight()
+    {
         return world.size();
     }
-    void loadBlocksInWorld()
+    void LoadBlocksInWorld()
     {
         std::vector<Bloque *> BlocksInArrary;
         for (auto array : world)
         {
             for (int bloque : array)
-            {   
+            {
                 if (bloque == 1)
-                    BlocksInArrary.push_back(new Bloque("./assets/dirt.png"));
+                    BlocksInArrary.push_back(new Bloque("./assets/image/dirt.png"));
                 else if (bloque == 2)
-                    BlocksInArrary.push_back(new Bloque("./assets/stone.png"));
-                else if(bloque == 0)
+                    BlocksInArrary.push_back(new Bloque("./assets/image/stone.png"));
+                else if (bloque == 0)
                 {
                     BlocksInArrary.push_back(nullptr);
                 }
@@ -186,20 +195,20 @@ public:
             blocksInWorld.push_back(BlocksInArrary);
             BlocksInArrary.clear();
         }
-
     }
-    Bloque* getBlockAt(int x, int y){
+    Bloque *GetBlockAt(int x, int y)
+    {
         return blocksInWorld[y][x];
     }
-    sf::Vector2f spawnCoords(){
-        int y, x =getWidth()/2;
-        for (y = 3 ; y < getHeight()/2; y++)
+    sf::Vector2f GetSpawnCoords()
+    {
+        int y, x = GetWidth() / 2;
+        for (y = 3; y < GetHeight() / 2; y++)
         {
-            if(world[y - 3][x] == 0 && world[y - 2][x] == 0 && world[y - 1][x] == 0 && world[y][x] == 1 && world[y + 1][x] == 1)
+            if (world[y - 3][x] == 0 && world[y - 2][x] == 0 && world[y - 1][x] == 0 && world[y][x] == 1 && world[y + 1][x] == 1)
                 break;
-        } 
+        }
         return sf::Vector2f(x, y);
     }
-
     ~Mundo() {}
 };
