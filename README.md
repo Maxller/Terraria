@@ -1,4 +1,4 @@
-![Tierra Aria](assets/custom-terraria-logo.png)
+![Tierra Aria](assets/image/custom-terraria-logo.png)
 
 **Tierra Aria** es un pequeño proyecto inspirado en Terraria, que busca combinar elementos de exploración, construcción, artesanía, combate y minería en un videojuego de acción-aventura y sandbox. Los jugadores comienzan en un mundo generado proceduralmente y deben reunir recursos, construir estructuras, y luchar contra diversas criaturas y jefes. Tierra Aria es conocido por su estilo de gráficos pixelados en 2D y su enfoque en la creatividad y la libertad del jugador para explorar y modificar el entorno.
 
@@ -6,8 +6,6 @@
 ![Tierra Aria](docs/ScreenShoot2.png)
 ![Tierra Aria](docs/ScreenShoot3.png)
 
-
-<iframe width="560" height="315" src="https://youtu.be/7r-O-jmsPII" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
 
 ## Objetivos del Desarrollo
 
