@@ -36,7 +36,11 @@ Para compilar el proyecto necesitas instalar algunas librerías. Se recomienda i
 
 ```sh
 # Instalar las librerías necesarias en MINGW64
-pacman -S mingw-w64-x86_64-gcc mingw-w64-x86_64-sfml
+# Copilador
+pacman -S mingw-w64-x86_64-gcc
+
+# SFML libreria
+pacman -S mingw-w64-x86_64-sfml
 
 # Compilar y Ejecutar el proyecto 
 make run
@@ -50,6 +54,11 @@ make run
 - `Mundo.hpp` - Creación del mundo
 - `Objeto.hpp` - Clase abstracta para todos los objetos renderizables
 - `Personaje.hpp` - Gestiona la interacción del personaje
+
+###Diagrama de clases actual 
+
+![Diagrama de clases](https://github.com/Maxller/Terraria/assets/89055172/f01853c9-bbc6-4f76-8bec-bd6ef15a21a1)
+
 
 ## Historial de Cambios
 
