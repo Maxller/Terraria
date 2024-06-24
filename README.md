@@ -57,8 +57,7 @@ make run
 
 ###Diagrama de clases actual 
 
-![Diagrama de clases](https://github.com/Maxller/Terraria/assets/89055172/f01853c9-bbc6-4f76-8bec-bd6ef15a21a1)
-
+![Diagrama de clases](https://github.com/Maxller/Terraria/assets/89055172/f58937ab-e921-4704-95bc-c5b31f999bc7)
 
 ## Historial de Cambios
 
