@@ -1,5 +1,7 @@
+#pragma once
 #include <SFML/Graphics.hpp>
 #include <iostream>
+#include <SFML/Audio.hpp>
 
 class Menu
 {
@@ -57,9 +59,9 @@ public:
             std::cerr << "Error loading logo image\n";
         }
         if (backTexture.loadFromFile("./assets/image/Splash_9_0.png"))
-            {
+        {
             std::cerr << "Error loading logo image\n";
-            }
+        }
 
         logoSprite.setTexture(logoTexture);
         backSprite.setTexture(backTexture);
@@ -72,6 +74,24 @@ public:
 
     int DisplayMenu(sf::RenderWindow &window)
     {
+        bool selected = false;
+        sf::SoundBuffer buffer, selectionBuffer;
+        if (!buffer.loadFromFile("./assets/sound/TierraAria_Menu.wav"))
+        {
+            std::cerr << "Error al cargar el archivo de sonido" << std::endl;
+            return -1;
+        }
+        if (!selectionBuffer.loadFromFile("./assets/sound/mouseOver.wav"))
+        {
+            std::cerr << "Error al cargar el archivo de sonido" << std::endl;
+            return -1;
+        }
+        sf::Sound sound, selection;
+        sound.setBuffer(buffer);
+        selection.setBuffer(selectionBuffer);
+        sound.setLoop(true);
+        sound.play();
+
         while (window.isOpen())
         {
             sf::Event event;
@@ -102,22 +122,34 @@ public:
                     }
                 }
             }
+            if (!playButton->CheckIfIsMouseOver(window) && !optionsButton->CheckIfIsMouseOver(window) && !exitButton->CheckIfIsMouseOver(window))
+                selected = false;
+            if ((playButton->CheckIfIsMouseOver(window) || optionsButton->CheckIfIsMouseOver(window) || exitButton->CheckIfIsMouseOver(window)) && !selected)
+            {
+                selection.play();
+                selected = true;
+            }
 
             if (playButton->CheckIfIsMouseOver(window))
+            {
                 playButton->setFillColor(sf::Color::Green);
+            }
             else
                 playButton->setFillColor(sf::Color::Cyan);
 
             if (optionsButton->CheckIfIsMouseOver(window))
+            {
                 optionsButton->setFillColor(sf::Color::Green);
+            }
             else
                 optionsButton->setFillColor(sf::Color::Cyan);
 
             if (exitButton->CheckIfIsMouseOver(window))
+            {
                 exitButton->setFillColor(sf::Color::Green);
+            }
             else
                 exitButton->setFillColor(sf::Color::Cyan);
-
             window.clear();
             window.draw(backSprite);
             window.draw(logoSprite);

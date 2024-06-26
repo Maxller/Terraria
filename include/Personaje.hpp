@@ -49,48 +49,55 @@ public:
         }
         return BlocksInArrary;
     }
+
     void UpdateFrame(int left, int top) override
     {
         sprite->setTextureRect(sf::IntRect(left + ((currentFrame % numFrames) * frameWidth + (1 * (currentFrame % numFrames))), top, frameWidth, frameHeight));
     }
+
     bool Mover(int Direccion, Camara *camara)
     {
-        
-            if (inmovil)
+
+        if (inmovil)
+        {
+            numFrames = 15;
+            currentFrame = 0;
+            frameHeight = 48;
+            frameWidth = 32;
+            inmovil = false;
+        }
+        if (direccion != Direccion)
+        {
+            sprite->move(Direccion * frameWidth * -1, 0);
+            direccion = Direccion;
+        }
+        sprite->setScale(direccion, 1);
+        std::vector<Bloque *> entorno = GetEntorno(camara);
+        for (Bloque *bloque : entorno)
+        {
+            if (CheckCollisionSide(bloque) == CollisionSide::Left)
             {
-                numFrames = 15;
-                currentFrame = 0;
-                frameHeight = 48;
-                frameWidth += 6;
-                inmovil = false;
+                return false;
             }
-            if (direccion != Direccion)
+            else if (CheckCollisionSide(bloque) == CollisionSide::Right)
             {
-                sprite->move(Direccion * frameWidth * -1, 0);
-                direccion = Direccion;
+                return false;
             }
-            sprite->setScale(direccion, 1);
-            std::vector<Bloque *> entorno = GetEntorno(camara);
-            for (Bloque *bloque : entorno)
+        }
+        if (!saltando && !cayendo)
+        {
+            if (clock.getElapsedTime().asSeconds() >= frameTime/2)
             {
-                if(CheckCollisionSide(bloque) == CollisionSide::Left){
-                    return false;
-                }else if(CheckCollisionSide(bloque) == CollisionSide::Right){
-                    return false;
-                }
+                std::cout<<"CurrentFrame: " << currentFrame << std::endl;
+                UpdateFrame(31, 2);
+                currentFrame++;
+                clock.restart();
             }
-            if (!saltando && !cayendo)
-            {
-                if (clock.getElapsedTime().asSeconds() >= frameTime)
-                {
-                    UpdateFrame(31, 2);
-                    currentFrame++;
-                    clock.restart();
-                }
-            }
-            
+        }
+
         return true;
     }
+
     void Detener()
     {
         numFrames = 1;
@@ -101,7 +108,7 @@ public:
         saltando = false;
         UpdateFrame(2, 2);
     }
-    
+
     void Saltar()
     {
         if (!cayendo)
@@ -117,9 +124,14 @@ public:
         else
             Caer();
     }
-    
+
     void Caer()
     {
+        numFrames = 1;
+        currentFrame = 0;
+        frameHeight = 46;
+        frameWidth = 26;
+        frameWidth = 30;
         cayendo = true;
         UpdateFrame(528, 2);
     }

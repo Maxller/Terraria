@@ -140,12 +140,13 @@ public:
                         contMoveCameraX += Direccion;
                     }
                 }
-                else if (Direccion == 2 || Direccion == -2)
+                else if (Direccion == 2 || Direccion == -2){
                     if (Direccion == 2)
                     {
                         Guia->Saltar();
                     }
                     contMoveCameraY += Direccion / 2;
+                }
                 if (mover){
                     for (auto *GameObject : components)
                         if (Direccion == 1 || Direccion == -1)
@@ -160,12 +161,13 @@ public:
                 SetComponents();
                 if (Direccion == 1 || Direccion == -1)
                     contMoveCameraX = 0;
-                else if (Direccion == 2 || Direccion == -2)
+                else if (Direccion == 2 || Direccion == -2){
                     if (Direccion == 2)
                     {
                         Guia->Saltar();
                     }
                     contMoveCameraY = 0;
+                }
                 for (auto *GameObject : components)
                     if (Direccion == 1 || Direccion == -1)
                         GameObject->ChangePopsicion(0, contMoveCameraY);
@@ -187,6 +189,11 @@ public:
     bool IsRunning() { return isRunning; }
 
     ~Juego() { 
+        for (auto component : components)
+        {
+            delete component;
+        }
+        
         delete Guia;
         delete menu;
         delete camara;

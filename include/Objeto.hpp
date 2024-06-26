@@ -109,7 +109,7 @@ public:
     return CollisionSide::None;
 }
 
-    ~Objeto(){}
+    virtual ~Objeto(){}
 };
 
 

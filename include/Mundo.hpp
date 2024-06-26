@@ -210,5 +210,16 @@ public:
         }
         return sf::Vector2f(x, y);
     }
-    ~Mundo() {}
+    ~Mundo() {
+        delete perlin;
+        for (auto  row : blocksInWorld)
+        {
+            for (auto x : row)
+            {
+                delete x;
+            }
+            
+        }
+        
+    }
 };
